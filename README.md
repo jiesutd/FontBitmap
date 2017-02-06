@@ -4,7 +4,9 @@ Giving the characters, it generate the 16x16 binary matrix of the characters sha
 
 It also provide some tedious demos. 
 
-* demo_show_string: show the binary maps of the giving string
+![alt text](https://github.com/jiesutd/FontBitmap/char_show.png "Character bitmap demo")
+
+* demo_show_string: show the binary maps of the giving string, 
 * demo_similar_char: find the similar characters of giving character and the (left,right,up,down) choice with the split position. The demo "demo_similar_char("苟", 3, "up")" mean find all characters which have the same first 3 lines of the char "苟". If will first show the binary map of the given base_character, matched results will be shown after you close the map. (Or just comment out line 172 to jump the show map process)
 
 
