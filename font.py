@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2016-11-05 21:17:27
 # @Last Modified by:   Jie     @Contact: jieynlp@gmail.com
-# @Last Modified time: 2016-11-06 19:18:09
+# @Last Modified time: 2017-02-06 22:36:53
 # 
 # The code is to extract bitwise information for bdf font file, and output bitmap from given char/strings
 
@@ -136,12 +136,104 @@ def print_string_font(char_array_dict,string):
 	char_list = list(string.decode('utf-8'))
 	for char in char_list:
 		char = str(ord(char))
+		print char_array_dict[char]
 		font_show(char_array_dict[char])
 	plt.show()
 
 
-if __name__ == '__main__':
+def demo():
 	bdf_file = "SimSun-16.bdf"
 	char_array_dict = read_bdf(bdf_file)
-	test_string = "羊样洋佯徉烊"
+	test_string = "善"
 	print_string_font(char_array_dict,test_string)
+
+
+def save2file(output_file):
+	bdf_file = "SimSun-16.bdf"
+	char_array_dict = read_bdf(bdf_file)
+	out_file = open(output_file,'w')
+	for key, value in char_array_dict.iteritems():
+		string = unichr(int(key)).encode("UTF-8")
+		array = char_array_dict[key].flatten()
+		for element in range(0,len(array)):
+			string += ' ' + str(int(array[element]))
+		out_file.write(string+ '\n')
+	out_file.close()
+
+
+
+#### side candidates: left, right, up and down respectively; split_position represent the match part start or end position
+def demo_similar_char(base_char,split_position=8, side="down"):
+	print "Find similar part of char:", base_char, ", Side:",side, ", position:", split_position
+	bdf_file = "SimSun-16.bdf"
+	char_array_dict = read_bdf(bdf_file)
+	char = str(ord(base_char.decode('utf-8')))
+	base_bitmap = char_array_dict[char]
+	font_show(char_array_dict[char])
+	plt.show()
+	base_set = get_compare_part(base_bitmap, split_position, side)
+	matched_list = []
+	for idx in range(700000):
+		char = str(idx)
+		if char in char_array_dict:
+			new_set = get_compare_part(char_array_dict[char], split_position, side)
+			interset = base_set.intersection(new_set)
+			if base_set.issubset(new_set):
+				print unichr(int(char)), char
+				matched_list.append(unichr(int(char)))
+	print "matched items:",len(matched_list)
+
+
+def get_compare_part(input_matrix, position, side):
+	if side == "left":
+		return x_left_part(input_matrix, position)
+	elif side == "right":
+		return x_right_part(input_matrix, position)
+	elif side == "up":
+		return y_up_part(input_matrix, position)
+	else:
+		return y_down_part(input_matrix, position)
+
+
+def y_down_part(input_matrix, y_start):
+	assert(len(input_matrix)>y_start)
+	out_set = set([])
+	for  idx in range(y_start, len(input_matrix)):
+		for idy in range(len(input_matrix[idx])):
+			if input_matrix[idx][idy] == 1:
+				out_set.add(str(idx)+"_"+str(idy))
+	return out_set
+
+
+def y_up_part(input_matrix, y_end):
+	assert(len(input_matrix)>y_end)
+	out_set = set([])
+	for  idx in range(0, y_end):
+		for idy in range(len(input_matrix[idx])):
+			if input_matrix[idx][idy] == 1:
+				out_set.add(str(idx)+"_"+str(idy))
+	return out_set
+
+def x_left_part(input_matrix, x_end):
+	out_set = set([])
+	for  idx in range(len(input_matrix)):
+		for idy in range(0, x_end):
+			if input_matrix[idx][idy] == 1:
+				out_set.add(str(idx)+"_"+str(idy))
+	return out_set
+
+
+def x_right_part(input_matrix, x_start):
+	out_set = set([])
+	for  idx in range(len(input_matrix)):
+		for idy in range(x_start, len(input_matrix[idx])):
+			if input_matrix[idx][idy] == 1:
+				out_set.add(str(idx)+"_"+str(idy))
+	return out_set
+
+
+if __name__ == '__main__':
+	# save2file("out.emb")
+	# demo()
+	cn_char = "苟"
+	demo_similar_char(cn_char, 3, "up")
