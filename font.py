@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2016-11-05 21:17:27
 # @Last Modified by:   Jie     @Contact: jieynlp@gmail.com
-# @Last Modified time: 2017-02-06 22:50:33
+# @Last Modified time: 2017-02-06 23:26:14
 # 
 # The code is to extract bitwise information for bdf font file, and output bitmap from given char/strings
 
@@ -178,8 +178,9 @@ def demo_similar_char(base_char,split_position=8, side="down"):
 			new_set = get_compare_part(char_array_dict[char], split_position, side)
 			interset = base_set.intersection(new_set)
 			if base_set.issubset(new_set):
-				print unichr(int(char)), char
+				print unichr(int(char)),
 				matched_list.append(unichr(int(char)))
+	print 
 	print "matched items:",len(matched_list)
 
 
@@ -234,4 +235,4 @@ def x_right_part(input_matrix, x_start):
 if __name__ == '__main__':
 	# test_string = "苟利国家生死以"
 	# demo_show_string(test_string) 
-	demo_similar_char("苟", 3, "up")
+	demo_similar_char("蛤", 6, "left")
