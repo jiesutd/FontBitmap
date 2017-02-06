@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2016-11-05 21:17:27
 # @Last Modified by:   Jie     @Contact: jieynlp@gmail.com
-# @Last Modified time: 2017-02-06 22:36:53
+# @Last Modified time: 2017-02-06 22:50:33
 # 
 # The code is to extract bitwise information for bdf font file, and output bitmap from given char/strings
 
@@ -141,10 +141,9 @@ def print_string_font(char_array_dict,string):
 	plt.show()
 
 
-def demo():
+def demo_show_string(test_string):
 	bdf_file = "SimSun-16.bdf"
 	char_array_dict = read_bdf(bdf_file)
-	test_string = "善"
 	print_string_font(char_array_dict,test_string)
 
 
@@ -233,7 +232,6 @@ def x_right_part(input_matrix, x_start):
 
 
 if __name__ == '__main__':
-	# save2file("out.emb")
-	# demo()
-	cn_char = "苟"
-	demo_similar_char(cn_char, 3, "up")
+	# test_string = "苟利国家生死以"
+	# demo_show_string(test_string) 
+	demo_similar_char("苟", 3, "up")
